@@ -1,0 +1,1 @@
+# hotel-power-automation
