@@ -19,7 +19,7 @@ public class FileReader implements Reader {
     @Override
     public InPut read(String file) {
 
-        try (Stream<String> stringStream = Files.lines(Paths.get("file"))) {
+        try (Stream<String> stringStream = Files.lines(Paths.get(file))) {
             final List<String> lines = stringStream.map(String::toLowerCase).collect(Collectors.toList());
             return readLine(lines);
         } catch (IOException e) {

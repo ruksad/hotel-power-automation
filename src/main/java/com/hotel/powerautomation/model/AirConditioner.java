@@ -1,5 +1,7 @@
 package com.hotel.powerautomation.model;
 
+import com.hotel.powerautomation.model.abstractmodels.Device;
+
 public class AirConditioner implements Device {
 
   //TODO this should be added the property file

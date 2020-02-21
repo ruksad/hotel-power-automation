@@ -1,4 +1,4 @@
-package com.hotel.powerautomation.model;
+package com.hotel.powerautomation.model.abstractmodels;
 
 import java.util.List;
 
