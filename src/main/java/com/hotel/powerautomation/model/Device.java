@@ -1,4 +1,4 @@
-package com.hotel.hotelpowerautomation.model;
+package com.hotel.powerautomation.model;
 
 public interface Device {
 

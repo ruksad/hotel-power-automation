@@ -1,4 +1,4 @@
-package com.hotel.hotelpowerautomation;
+package com.hotel.powerautomation;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
