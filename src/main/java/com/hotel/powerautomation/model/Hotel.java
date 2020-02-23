@@ -29,12 +29,7 @@ public class Hotel {
     public boolean consumeMoves(final InPut inPut) {
         final Hotel hotel = initializeHotel(inPut);
         final List<Move> moves = inPut.getMoves();
-        final HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
-        moves.forEach(x->{
-            String floorName = "Floor " + x.getFloorNumber();
-            String subCorridorName = "Sub corridor " + x.getSubCorridorNumber();
-            stringIntegerHashMap.compute(floorName+subCorridorName,(k,v)-> (v==null)?1:v+1);
-        });
+        final HashMap<String, Integer> stringIntegerHashMap = equilizeMoveAndNoMove(moves);
         for (Move m : moves) {
 
             String floorName = "Floor " + m.getFloorNumber();
@@ -68,6 +63,16 @@ public class Hotel {
 
         }
         return true;
+    }
+
+    private HashMap<String, Integer> equilizeMoveAndNoMove(List<Move> moves) {
+        final HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
+        moves.forEach(x->{
+            String floorName = "Floor " + x.getFloorNumber();
+            String subCorridorName = "Sub corridor " + x.getSubCorridorNumber();
+            stringIntegerHashMap.compute(floorName+subCorridorName,(k,v)-> (v==null)?1:v+1);
+        });
+        return stringIntegerHashMap;
     }
 
 
