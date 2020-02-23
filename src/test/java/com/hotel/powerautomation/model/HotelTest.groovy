@@ -11,9 +11,9 @@ class HotelTest extends Specification {
     def hotel=new Hotel();
     def podamFactory=new PodamFactoryImpl();
     def "InitializeHotel"() {
-        given:
+        given: " default hotel implementation"
         def input=podamFactory.manufacturePojo(InPut.class)
-        input.setNoOfFloors(5)
+        input.setNoOfFloors(2)
         input.setNoOfMainCorridors(2)
         input.setNoOfSubCorridors(2);
         def move1=podamFactory.manufacturePojo(Move.class)
@@ -34,6 +34,35 @@ class HotelTest extends Specification {
         def hotel=hotel.initializeHotel(input)
         then:
         Objects.nonNull(hotel.getFloors())
+        hotel.getFloors().get(0).currentPowerConsumption()==60
+    }
+
+    def "InitializeHotel with on light turned off"() {
+        given: " default hotel implementation"
+        def input=podamFactory.manufacturePojo(InPut.class)
+        input.setNoOfFloors(2)
+        input.setNoOfMainCorridors(2)
+        input.setNoOfSubCorridors(2);
+        def move1=podamFactory.manufacturePojo(Move.class)
+        def move2=podamFactory.manufacturePojo(Move.class)
+        move1.setFloorNumber(1)
+        move1.setMovement(true);
+        move1.setSubCorridorNumber(2)
+        move2.setFloorNumber(2)
+        move2.setMovement(false)
+        move2.setSubCorridorNumber(1)
+        move2.setNoMovementsForMinutes(2)
+        def list=input.getMoves()
+        list.clear()
+        list.add(move1);
+        list.add(move2)
+
+        when:
+        def hotel=hotel.initializeHotel(input)
+        hotel.getFloors().get(0).getMainCorridors().get(0).getDevices().get(0).action(false)
+        then:
+        Objects.nonNull(hotel.getFloors())
+        hotel.getFloors().get(0).currentPowerConsumption()==55
     }
 
     def "getDevice"(){

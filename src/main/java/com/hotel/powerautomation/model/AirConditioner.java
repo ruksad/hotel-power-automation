@@ -29,4 +29,9 @@ public class AirConditioner implements Device {
   public boolean state() {
     return state;
   }
+
+  @Override
+  public String stateToString() {
+    return this.state?"ON":"OFF";
+  }
 }
