@@ -5,8 +5,6 @@ import com.hotel.powerautomation.model.input.Move
 import spock.lang.Specification
 import uk.co.jemos.podam.api.PodamFactoryImpl
 
-import java.util.stream.Collectors
-
 class HotelTest extends Specification {
     def hotel=new Hotel();
     def podamFactory=new PodamFactoryImpl();
@@ -65,25 +63,7 @@ class HotelTest extends Specification {
         hotel.getFloors().get(0).currentPowerConsumption()==55
     }
 
-    def "getDevice"(){
-        given:
-        //def light=podamFactory.manufacturePojo()
-        when:
-        def list=hotel.getDevice();
-        then:
-        list.size()>0;
-        list.get(0).state()
 
-    }
 
-    def "createMainCorridor"(){
-        given:
-        //def light=podamFactory.manufacturePojo()
-        when:
-        def list=hotel.createMainCorridor(5);
-        then:
-        list.size()>0;
-        list.get(0).getMainCorridorName().equals("Main corridor 1")
 
-    }
 }
