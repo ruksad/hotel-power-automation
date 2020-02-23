@@ -1,6 +1,7 @@
 package com.hotel.powerautomation.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.hotel.powerautomation.framework.MovePublisher;
 import com.hotel.powerautomation.framework.Observer;
@@ -28,11 +29,17 @@ public class Hotel {
     public boolean consumeMoves(final InPut inPut) {
         final Hotel hotel = initializeHotel(inPut);
         final List<Move> moves = inPut.getMoves();
-
+        final HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
+        moves.forEach(x->{
+            String floorName = "Floor " + x.getFloorNumber();
+            String subCorridorName = "Sub corridor " + x.getSubCorridorNumber();
+            stringIntegerHashMap.compute(floorName+subCorridorName,(k,v)-> (v==null)?1:v+1);
+        });
         for (Move m : moves) {
 
             String floorName = "Floor " + m.getFloorNumber();
             String subCorridorName = "Sub corridor " + m.getSubCorridorNumber();
+
 
             final Floor floor = Floor.findFloor(hotel.getFloors(), floorName);
             final SubCorridor subCorridor = SubCorridor.findSubCorridor(floor.getSubCorridors(), subCorridorName);
@@ -42,7 +49,7 @@ public class Hotel {
             if (m.isMovement()) {
                 movePublisher.notifyUpdate(subCorridor, true);
             } else {
-                if (m.getNoMovementsForMinutes() > 1) {
+                if (m.getNoMovementsForMinutes() > 1 && stringIntegerHashMap.get(floorName+subCorridorName)>1) {
                     movePublisher.notifyUpdate(subCorridor, false);
                 }
             }

@@ -54,8 +54,14 @@ public class SubCorridor implements Corridor, Observer {
             }
         } else {
             for (Device device : this.devices) {
+                if(device instanceof AirConditioner && device.state())
                 device.action(false);
             }
+            /*final Device light = this.devices.stream().filter(x -> x instanceof Light).findFirst().get();
+            final Device ac = this.devices.stream().filter(x -> x instanceof AirConditioner).findFirst().get();
+            if(!light.state() && ac.state()){
+                ac.action(false);
+            }*/
         }
     }
 }
