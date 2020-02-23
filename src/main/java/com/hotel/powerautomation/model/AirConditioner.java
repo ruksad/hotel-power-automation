@@ -1,11 +1,13 @@
 package com.hotel.powerautomation.model;
 
 import com.hotel.powerautomation.model.abstractmodels.Device;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 public class AirConditioner implements Device {
 
   //TODO this should be added the property file
-  public static final int AC_POWER_UNITS = 15;
+  public static final int AC_POWER_UNITS = 10;
 
   private boolean state;
 
@@ -21,5 +23,10 @@ public class AirConditioner implements Device {
   @Override
   public int units() {
     return AC_POWER_UNITS;
+  }
+
+  @Override
+  public boolean state() {
+    return state;
   }
 }

@@ -9,8 +9,10 @@ import lombok.Data;
 public class SubCorridor implements Corridor {
 
     private String subCorridorName;
+    private List<Device> devices;
+
     @Override
     public List<Device> getDevices() {
-        return null;
+        return this.devices;
     }
 }

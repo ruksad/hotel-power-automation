@@ -8,9 +8,11 @@ import lombok.Data;
 @Data
 public class MainCorridor implements Corridor {
 
-    private String corridorName;
+    private String mainCorridorName;
+    private List<Device> devices;
+
     @Override
     public List<Device> getDevices() {
-        return null;
+        return this.devices;
     }
 }
