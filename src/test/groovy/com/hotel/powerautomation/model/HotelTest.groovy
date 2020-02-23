@@ -32,7 +32,7 @@ class HotelTest extends Specification {
         def hotel=hotel.initializeHotel(input)
         then:
         Objects.nonNull(hotel.getFloors())
-        hotel.getFloors().get(0).currentPowerConsumption()==60
+        hotel.getFloors().get(0).currentPowerConsumption()==50
     }
 
     def "InitializeHotel with on light turned off"() {
@@ -60,7 +60,7 @@ class HotelTest extends Specification {
         hotel.getFloors().get(0).getMainCorridors().get(0).getDevices().get(0).action(false)
         then:
         Objects.nonNull(hotel.getFloors())
-        hotel.getFloors().get(0).currentPowerConsumption()==55
+        hotel.getFloors().get(0).currentPowerConsumption()==45
     }
 
 

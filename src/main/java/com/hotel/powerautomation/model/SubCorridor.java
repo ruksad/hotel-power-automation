@@ -24,9 +24,18 @@ public class SubCorridor implements Corridor {
             final SubCorridor subCorridor = new SubCorridor();
             subCorridor.setSubCorridorName("Sub corridor " + (k + 1));
             final List<Device> device = getDevice();
+            switchOffTheLights(device);
             subCorridor.setDevices(device);
             mc.add(subCorridor);
         }
         return mc;
+    }
+
+    private static void switchOffTheLights(List<Device> devices){
+        devices.forEach(x->{
+            if(x instanceof Light){
+                x.action(false);
+            }
+        });
     }
 }

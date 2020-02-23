@@ -35,9 +35,9 @@ public class Floor {
         return powerConsumptionFormula.apply(a, b);
     }
 
-    public static int getMaxPowerConsumption(Floor floor) {
-        int a = floor.getMainCorridors().size();
-        int b = floor.getSubCorridors().size();
+    public int maxPowerConsumption() {
+        int a = this.getMainCorridors().size();
+        int b = this.getSubCorridors().size();
         return calculatePowerConsumption(a, b);
     }
 
@@ -57,9 +57,18 @@ public class Floor {
         final List<Corridor> mainCorridor = MainCorridor.createCorridor(inPut.getNoOfMainCorridors());
 
         final List<Corridor> subCorridor = SubCorridor.createCorridor(inPut.getNoOfSubCorridors());
+
         floor.setMainCorridors(mainCorridor);
         floor.setSubCorridors(subCorridor);
 
         return floor;
+    }
+
+    public boolean isPowerConsumptionExceeding(){
+        return maxPowerConsumption()>currentPowerConsumption();
+    }
+
+    public int powerConsumptionExceedingFactor(){
+        return currentPowerConsumption()-maxPowerConsumption();
     }
 }
