@@ -10,4 +10,13 @@ class FloorTest extends Specification {
         then:
         ans==250
     }
+
+
+    def "createFloor"() {
+        given:
+        when:
+        def ans=Floor.createFloor(10,10)
+        then:
+        ans==250
+    }
 }

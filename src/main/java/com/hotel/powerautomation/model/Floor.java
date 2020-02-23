@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import com.hotel.powerautomation.framework.MovePublisher;
 import com.hotel.powerautomation.model.abstractmodels.Corridor;
 import com.hotel.powerautomation.model.input.InPut;
 import com.hotel.powerautomation.model.utils.Utils;
@@ -26,6 +27,7 @@ public class Floor {
 
     private String floorName;
     private int powerConsumption;
+    private MovePublisher movePublisher;
 
     private List<Corridor> mainCorridors = new ArrayList<>(4);
     private List<Corridor> subCorridors = new ArrayList<>(4);
@@ -49,23 +51,35 @@ public class Floor {
         return mpc + scpc;
     }
 
-    public static Floor createFloor(InPut inPut, int i) {
+    public static Floor createFloor(InPut inPut, int floorNumber) {
         final Floor floor = new Floor();
-        floor.setFloorName("Floor " + (i + 1));
+        floor.setFloorName("Floor " + (floorNumber + 1));
         floor.setPowerConsumption(floor.getPowerConsumption());
 
         final List<Corridor> mainCorridor = MainCorridor.createCorridor(inPut.getNoOfMainCorridors());
 
         final List<Corridor> subCorridor = SubCorridor.createCorridor(inPut.getNoOfSubCorridors());
 
+        final MovePublisher movePublisher = createObservers(subCorridor);
+
+        floor.setMovePublisher(movePublisher);
         floor.setMainCorridors(mainCorridor);
         floor.setSubCorridors(subCorridor);
 
         return floor;
     }
 
+    private static MovePublisher createObservers(List<Corridor> subCorridor) {
+        final MovePublisher movePublisher = new MovePublisher();
+        subCorridor.stream().map(x->(SubCorridor)x).forEach(x->movePublisher.attach(x));
+        return movePublisher;
+    }
+
+    public static Floor findFloor(List<Floor> list,String floorName){
+        return list.stream().filter(x -> x.getFloorName().equals(floorName)).findFirst().get();
+    }
     public boolean isPowerConsumptionExceeding(){
-        return maxPowerConsumption()>currentPowerConsumption();
+        return currentPowerConsumption()>maxPowerConsumption();
     }
 
     public int powerConsumptionExceedingFactor(){

@@ -3,15 +3,17 @@ package com.hotel.powerautomation.model;
 import java.util.ArrayList;
 import java.util.List;
 import static com.hotel.powerautomation.model.abstractmodels.Device.getDevice;
+import com.hotel.powerautomation.framework.Observer;
 import com.hotel.powerautomation.model.abstractmodels.Corridor;
 import com.hotel.powerautomation.model.abstractmodels.Device;
 import lombok.Data;
 
 @Data
-public class SubCorridor implements Corridor {
+public class SubCorridor implements Corridor, Observer {
 
     private String subCorridorName;
     private List<Device> devices;
+
 
     @Override
     public List<Device> getDevices() {
@@ -31,11 +33,29 @@ public class SubCorridor implements Corridor {
         return mc;
     }
 
-    private static void switchOffTheLights(List<Device> devices){
-        devices.forEach(x->{
-            if(x instanceof Light){
+    private static void switchOffTheLights(List<Device> devices) {
+        devices.forEach(x -> {
+            if (x instanceof Light) {
                 x.action(false);
             }
         });
+    }
+
+    public static SubCorridor findSubCorridor(List<Corridor> subCorridors, String subCorridorName) {
+        return subCorridors.stream().map(x -> (SubCorridor) x)
+            .filter(x -> x.getSubCorridorName().equals(subCorridorName)).findFirst().get();
+    }
+
+    @Override
+    public void update(SubCorridor subCorridor, boolean isMovement) {
+        if (this.equals(subCorridor) && isMovement) {
+            for (Device device : this.devices) {
+                device.action(true);
+            }
+        } else {
+            for (Device device : this.devices) {
+                device.action(false);
+            }
+        }
     }
 }
