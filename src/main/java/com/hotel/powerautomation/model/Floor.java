@@ -56,9 +56,9 @@ public class Floor {
         floor.setFloorName("Floor " + (floorNumber + 1));
         floor.setPowerConsumption(floor.getPowerConsumption());
 
-        final List<Corridor> mainCorridor = MainCorridor.createCorridor(inPut.getNoOfMainCorridors());
+        final List<Corridor> mainCorridor = MainCorridor.createCorridor("floorr"+(floorNumber+1),inPut.getNoOfMainCorridors());
 
-        final List<Corridor> subCorridor = SubCorridor.createCorridor(inPut.getNoOfSubCorridors());
+        final List<Corridor> subCorridor = SubCorridor.createCorridor("floorr"+(floorNumber+1),inPut.getNoOfSubCorridors());
 
         final MovePublisher movePublisher = createObservers(subCorridor);
 

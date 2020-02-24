@@ -77,7 +77,7 @@ class HotelTest extends Specification {
 
         move2.setFloorNumber(2)
         move2.setMovement(false)
-        move2.setSubCorridorNumber(1)
+        move2.setSubCorridorNumber(2)
         move2.setNoMovementsForMinutes(2)
         def list=input.getMoves()
         list.clear()

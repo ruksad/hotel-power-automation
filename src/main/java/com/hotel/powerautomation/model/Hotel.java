@@ -3,11 +3,8 @@ package com.hotel.powerautomation.model;
 import java.util.ArrayList;
 import java.util.List;
 import com.hotel.powerautomation.framework.MovePublisher;
-import com.hotel.powerautomation.framework.Observer;
-import com.hotel.powerautomation.model.abstractmodels.Device;
 import com.hotel.powerautomation.model.input.InPut;
 import com.hotel.powerautomation.model.input.Move;
-import com.hotel.powerautomation.model.utils.Utils;
 import lombok.Data;
 
 @Data
@@ -34,7 +31,7 @@ public class Hotel {
         for (Move m : moves) {
 
             String floorName = "Floor " + m.getFloorNumber();
-            String subCorridorName = "Sub corridor " + m.getSubCorridorNumber();
+            String subCorridorName = "floorr"+m.getFloorNumber()+"Sub corridor " + m.getSubCorridorNumber();
 
             final Floor floor = Floor.findFloor(hotel.getFloors(), floorName);
             final SubCorridor subCorridor = SubCorridor.findSubCorridor(floor.getSubCorridors(), subCorridorName);
@@ -49,10 +46,11 @@ public class Hotel {
                 }
             }
 
-            movePublisher.notifyPowerConsumptionIncreasing(subCorridor,floor.isPowerConsumptionExceeding());
+            if (floor.isPowerConsumptionExceeding()) {
+                movePublisher.notifyPowerConsumptionIncreasing(subCorridor, floor.isPowerConsumptionExceeding());
+            }
 
-
-            System.out.println(hotel.getFloors().toString().replaceAll("[\\[,\\]]", ""));
+            System.out.println(hotel.getFloors().toString().replaceAll("[\\[,\\]]", "").replaceAll("floorr[0-9]+",""));
             System.out.println("---------------------------------------\n");
         }
 

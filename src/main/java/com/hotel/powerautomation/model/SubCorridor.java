@@ -26,11 +26,11 @@ public class SubCorridor implements Corridor, Observer {
         return this.devices;
     }
 
-    public static List<Corridor> createCorridor(int noOfCorridor) {
+    public static List<Corridor> createCorridor(String floorName, int noOfCorridor) {
         List<Corridor> mc = new ArrayList<>();
         for (int k = 0; k < noOfCorridor; k++) {
             final SubCorridor subCorridor = new SubCorridor();
-            subCorridor.setSubCorridorName("Sub corridor " + (k + 1));
+            subCorridor.setSubCorridorName(floorName + "Sub corridor " + (k + 1));
             final List<Device> device = getDevice();
             switchOffTheLights(device);
             subCorridor.setDevices(device);
@@ -61,7 +61,11 @@ public class SubCorridor implements Corridor, Observer {
                 device.action(true);
             }
             trackCorridorVisited.compute(subCorridor, (k, v) -> (Objects.isNull(v)) ? 1 : v + 1);
-        } else if (Objects.nonNull(integer) && integer > 1 && !isMovement) {
+        } else if (isMovement) {
+            for (Device device : subCorridor.getDevices()) {
+                device.action(false);
+            }
+        } else if (!isMovement) {
             for (Device device : subCorridor.getDevices()) {
                 if (device instanceof AirConditioner) {
                     device.action(true);
@@ -73,17 +77,21 @@ public class SubCorridor implements Corridor, Observer {
         }
     }
 
+    public static boolean isCorridorAlreadyVisited(SubCorridor subCorridor) {
+        return trackCorridorVisited.get(subCorridor) >= 1;
+    }
+
     @Override
     public void updatePowerConsumption(SubCorridor subCorridor, boolean flag) {
         if (this.equals(subCorridor)) {
             return;
         }
         if (flag) {
-            for (Device device : subCorridor.getDevices()) {
+            for (Device device : this.getDevices()) {
                 device.action(false);
             }
         } else if (!flag) {
-            for (Device device : subCorridor.getDevices()) {
+            for (Device device : this.getDevices()) {
                 if (device instanceof Light) {
                     device.action(false);
                 } else if (device instanceof AirConditioner) {

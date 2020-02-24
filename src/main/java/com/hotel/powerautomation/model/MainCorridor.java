@@ -17,11 +17,11 @@ public class MainCorridor implements Corridor {
         return this.devices;
     }
 
-    public static List<Corridor> createCorridor(int noOfCorridor) {
+    public static List<Corridor> createCorridor(String floorName,int noOfCorridor) {
         List<Corridor> subC = new ArrayList<>();
         for (int j = 0; j < noOfCorridor; j++) {
             final MainCorridor mainCorridor = new MainCorridor();
-            mainCorridor.setMainCorridorName("Main corridor " + (j + 1));
+            mainCorridor.setMainCorridorName(floorName+"Main corridor " + (j + 1));
             final List<Device> device = Device.getDevice();
             mainCorridor.setDevices(device);
             subC.add(mainCorridor);
