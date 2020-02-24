@@ -29,4 +29,14 @@ public class MovePublisher implements Subject {
 
         }
     }
+
+    @Override
+    public void notifyPowerConsumptionIncreasing(SubCorridor subCorridor, boolean isPowerConsumptionIncreasing) {
+        for (SubCorridor o : observers) {
+
+            o.updatePowerConsumption(subCorridor, isPowerConsumptionIncreasing);
+
+        }
+
+    }
 }

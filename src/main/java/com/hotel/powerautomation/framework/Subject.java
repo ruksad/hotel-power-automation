@@ -8,5 +8,7 @@ public interface Subject {
 
     void detach(SubCorridor o);
 
-    void notifyUpdate(SubCorridor subCorridorName,boolean isMovement);
+    void notifyUpdate(SubCorridor subCorridorName,boolean flag);
+
+    void notifyPowerConsumptionIncreasing(SubCorridor subCorridor,boolean isPowerConsumptionIncreasing);
 }

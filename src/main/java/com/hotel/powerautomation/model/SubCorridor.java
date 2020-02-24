@@ -1,19 +1,24 @@
 package com.hotel.powerautomation.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import static com.hotel.powerautomation.model.abstractmodels.Device.getDevice;
 import com.hotel.powerautomation.framework.Observer;
 import com.hotel.powerautomation.model.abstractmodels.Corridor;
 import com.hotel.powerautomation.model.abstractmodels.Device;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class SubCorridor implements Corridor, Observer {
 
     private String subCorridorName;
     private List<Device> devices;
-    private boolean isCorridorVisited;
+    private static Map<SubCorridor, Integer> trackCorridorVisited = new HashMap<>();
 
 
     @Override
@@ -25,7 +30,6 @@ public class SubCorridor implements Corridor, Observer {
         List<Corridor> mc = new ArrayList<>();
         for (int k = 0; k < noOfCorridor; k++) {
             final SubCorridor subCorridor = new SubCorridor();
-            subCorridor.setCorridorVisited(false);
             subCorridor.setSubCorridorName("Sub corridor " + (k + 1));
             final List<Device> device = getDevice();
             switchOffTheLights(device);
@@ -50,12 +54,14 @@ public class SubCorridor implements Corridor, Observer {
 
     @Override
     public void update(SubCorridor subCorridor, boolean isMovement) {
+        final Integer integer = trackCorridorVisited.get(subCorridor);
+
         if (this.equals(subCorridor) && isMovement) {
             for (Device device : subCorridor.getDevices()) {
                 device.action(true);
             }
-            subCorridor.setCorridorVisited(true);
-        } else if (subCorridor.isCorridorVisited() && !isMovement) {
+            trackCorridorVisited.compute(subCorridor, (k, v) -> (Objects.isNull(v)) ? 1 : v + 1);
+        } else if (Objects.nonNull(integer) && integer > 1 && !isMovement) {
             for (Device device : subCorridor.getDevices()) {
                 if (device instanceof AirConditioner) {
                     device.action(true);
@@ -64,7 +70,26 @@ public class SubCorridor implements Corridor, Observer {
                     device.action(false);
                 }
             }
-            subCorridor.setCorridorVisited(false);
+        }
+    }
+
+    @Override
+    public void updatePowerConsumption(SubCorridor subCorridor, boolean flag) {
+        if (this.equals(subCorridor)) {
+            return;
+        }
+        if (flag) {
+            for (Device device : subCorridor.getDevices()) {
+                device.action(false);
+            }
+        } else if (!flag) {
+            for (Device device : subCorridor.getDevices()) {
+                if (device instanceof Light) {
+                    device.action(false);
+                } else if (device instanceof AirConditioner) {
+                    device.action(true);
+                }
+            }
         }
     }
 

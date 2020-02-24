@@ -117,5 +117,32 @@ class HotelTest extends Specification {
         returns
     }
 
+    def "consumeMoves with same move  same corridoor floors"() {
+        given: " default hotel implementation"
+        def input=podamFactory.manufacturePojo(InPut.class)
+        input.setNoOfFloors(2)
+        input.setNoOfMainCorridors(2)
+        input.setNoOfSubCorridors(2);
+        def move1=podamFactory.manufacturePojo(Move.class)
+        def move2=podamFactory.manufacturePojo(Move.class)
+        move1.setFloorNumber(1)
+        move1.setMovement(true);
+        move1.setSubCorridorNumber(2)
+
+        move2.setFloorNumber(1)
+        move2.setMovement(true)
+        move2.setSubCorridorNumber(2)
+        move2.setNoMovementsForMinutes(2)
+        def list=input.getMoves()
+        list.clear()
+        list.add(move1);
+        list.add(move2)
+
+        when:
+        def returns =hotel.consumeMoves(input)
+        then:
+        returns
+    }
+
 
 }

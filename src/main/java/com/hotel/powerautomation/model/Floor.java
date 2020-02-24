@@ -82,6 +82,9 @@ public class Floor {
         return currentPowerConsumption()>maxPowerConsumption();
     }
 
+    public boolean isPowerConsumptionNeutral(){
+        return currentPowerConsumption()==maxPowerConsumption();
+    }
     public int powerConsumptionExceedingFactor(){
         return currentPowerConsumption()-maxPowerConsumption();
     }
@@ -89,8 +92,8 @@ public class Floor {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("\t\tFloor ");
-        sb.append(getFloorName()).append("\t\t\n").append(getMainCorridors().toString())
-            .append("\n").append(getSubCorridors().toString());
+        sb.append(getFloorName()).append("\t\t\t\n").append(getMainCorridors().toString())
+            .append("\n").append(getSubCorridors().toString()).append("\n");
         return sb.toString();
     }
 }

@@ -49,36 +49,13 @@ public class Hotel {
                 }
             }
 
-            if (floor.isPowerConsumptionExceeding()) {
-                for (Observer o : floor.getMovePublisher().getObservers()) {
-                    final SubCorridor sc = (SubCorridor) o;
-                    if (subCorridor.equals(sc)) {
-                        continue;
-                    }
-                    for (Device device : sc.getDevices()) {
-                        device.action(false);
-                    }
-                }
-            } else if (!floor.isPowerConsumptionExceeding()) {
-                for (Observer o : floor.getMovePublisher().getObservers()) {
-                    final SubCorridor sc = (SubCorridor) o;
-                    if (subCorridor.equals(sc)) {
-                        continue;
-                    }
-                    for (Device device : sc.getDevices()) {
-                        if (device instanceof Light) {
-                            device.action(false);
-                        } else if (device instanceof AirConditioner) {
-                            device.action(true);
-                        }
-                    }
-                }
-            }
+            movePublisher.notifyPowerConsumptionIncreasing(subCorridor,floor.isPowerConsumptionExceeding());
 
+
+            System.out.println(hotel.getFloors().toString().replaceAll("[\\[,\\]]", ""));
+            System.out.println("---------------------------------------\n");
         }
-        final ArrayList<Floor> customPrintableArrayList = (ArrayList<Floor>) Utils.customPrintableArrayList(hotel.getFloors());
-        System.out.println(customPrintableArrayList.toString());
-        // System.out.println(hotel.getFloors());
+
         return true;
     }
 }
