@@ -85,4 +85,12 @@ public class Floor {
     public int powerConsumptionExceedingFactor(){
         return currentPowerConsumption()-maxPowerConsumption();
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("\t\tFloor ");
+        sb.append(getFloorName()).append("\t\t\n").append(getMainCorridors().toString())
+            .append("\n").append(getSubCorridors().toString());
+        return sb.toString();
+    }
 }

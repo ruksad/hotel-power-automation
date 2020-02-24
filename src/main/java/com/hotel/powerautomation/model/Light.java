@@ -34,4 +34,11 @@ public class Light implements Device {
     public String stateToString() {
         return this.state?"ON":"OFF";
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Light :");
+        sb.append(stateToString());
+        return sb.toString();
+    }
 }

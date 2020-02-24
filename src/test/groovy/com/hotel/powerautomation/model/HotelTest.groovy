@@ -63,7 +63,7 @@ class HotelTest extends Specification {
         hotel.getFloors().get(0).currentPowerConsumption()==45
     }
 
-    def "consumeMoves"() {
+    def "consumeMoves with different move floors"() {
         given: " default hotel implementation"
         def input=podamFactory.manufacturePojo(InPut.class)
         input.setNoOfFloors(2)
@@ -85,10 +85,36 @@ class HotelTest extends Specification {
         list.add(move2)
 
         when:
-        def hotel=hotel.consumeMoves(input)
+        def returns =hotel.consumeMoves(input)
         then:
-        Objects.nonNull(hotel.getFloors())
-        hotel.getFloors().get(0).currentPowerConsumption()==45
+        returns
+    }
+
+    def "consumeMoves with same move floors"() {
+        given: " default hotel implementation"
+        def input=podamFactory.manufacturePojo(InPut.class)
+        input.setNoOfFloors(2)
+        input.setNoOfMainCorridors(2)
+        input.setNoOfSubCorridors(2);
+        def move1=podamFactory.manufacturePojo(Move.class)
+        def move2=podamFactory.manufacturePojo(Move.class)
+        move1.setFloorNumber(1)
+        move1.setMovement(true);
+        move1.setSubCorridorNumber(2)
+
+        move2.setFloorNumber(1)
+        move2.setMovement(false)
+        move2.setSubCorridorNumber(2)
+        move2.setNoMovementsForMinutes(2)
+        def list=input.getMoves()
+        list.clear()
+        list.add(move1);
+        list.add(move2)
+
+        when:
+        def returns =hotel.consumeMoves(input)
+        then:
+        returns
     }
 
 

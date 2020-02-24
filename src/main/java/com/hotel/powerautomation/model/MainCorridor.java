@@ -28,4 +28,11 @@ public class MainCorridor implements Corridor {
         }
         return subC;
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer(mainCorridorName);
+        sb.append(devices.toString());
+        return sb.toString();
+    }
 }

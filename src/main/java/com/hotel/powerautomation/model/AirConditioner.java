@@ -34,4 +34,11 @@ public class AirConditioner implements Device {
   public String stateToString() {
     return this.state?"ON":"OFF";
   }
+
+  @Override
+  public String toString() {
+    final StringBuffer sb = new StringBuffer("AC :");
+    sb.append(stateToString()).append("\n");
+    return sb.toString();
+  }
 }

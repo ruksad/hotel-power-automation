@@ -13,6 +13,7 @@ public class SubCorridor implements Corridor, Observer {
 
     private String subCorridorName;
     private List<Device> devices;
+    private boolean isCorridorVisited;
 
 
     @Override
@@ -24,6 +25,7 @@ public class SubCorridor implements Corridor, Observer {
         List<Corridor> mc = new ArrayList<>();
         for (int k = 0; k < noOfCorridor; k++) {
             final SubCorridor subCorridor = new SubCorridor();
+            subCorridor.setCorridorVisited(false);
             subCorridor.setSubCorridorName("Sub corridor " + (k + 1));
             final List<Device> device = getDevice();
             switchOffTheLights(device);
@@ -49,19 +51,27 @@ public class SubCorridor implements Corridor, Observer {
     @Override
     public void update(SubCorridor subCorridor, boolean isMovement) {
         if (this.equals(subCorridor) && isMovement) {
-            for (Device device : this.devices) {
+            for (Device device : subCorridor.getDevices()) {
                 device.action(true);
             }
-        } else {
-            for (Device device : this.devices) {
-                if(device instanceof AirConditioner && device.state())
-                device.action(false);
+            subCorridor.setCorridorVisited(true);
+        } else if (subCorridor.isCorridorVisited() && !isMovement) {
+            for (Device device : subCorridor.getDevices()) {
+                if (device instanceof AirConditioner) {
+                    device.action(true);
+                }
+                if (device instanceof Light) {
+                    device.action(false);
+                }
             }
-            /*final Device light = this.devices.stream().filter(x -> x instanceof Light).findFirst().get();
-            final Device ac = this.devices.stream().filter(x -> x instanceof AirConditioner).findFirst().get();
-            if(!light.state() && ac.state()){
-                ac.action(false);
-            }*/
+            subCorridor.setCorridorVisited(false);
         }
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer(subCorridorName);
+        sb.append(devices.toString());
+        return sb.toString();
     }
 }
