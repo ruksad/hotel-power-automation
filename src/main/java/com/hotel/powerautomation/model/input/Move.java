@@ -2,14 +2,17 @@ package com.hotel.powerautomation.model.input;
 
 import com.hotel.powerautomation.model.utils.Utils;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(exclude = "noMovementsForMinutes")
 public class Move {
 
     private int floorNumber;
     private int subCorridorNumber;
     private boolean isMovement;
     private int noMovementsForMinutes;
+    private int moveDuplicateOfIndex;
 
     public static Move readMovement(String line) {
         Move move = new Move();
@@ -28,4 +31,5 @@ public class Move {
         }
         return move;
     }
+
 }

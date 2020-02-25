@@ -2,6 +2,7 @@ package com.hotel.powerautomation.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import com.hotel.powerautomation.framework.MovePublisher;
 import com.hotel.powerautomation.model.input.InPut;
 import com.hotel.powerautomation.model.input.Move;
@@ -28,10 +29,10 @@ public class Hotel {
         final Hotel hotel = initializeHotel(inPut);
         final List<Move> moves = inPut.getMoves();
 
-        for (Move m : moves) {
-
+        for (int i=0;i<moves.size();i++) {
+            Move m=moves.get(i);
             String floorName = "Floor " + m.getFloorNumber();
-            String subCorridorName = "floorr"+m.getFloorNumber()+"Sub corridor " + m.getSubCorridorNumber();
+            String subCorridorName = "floorr" + m.getFloorNumber() + "Sub corridor " + m.getSubCorridorNumber();
 
             final Floor floor = Floor.findFloor(hotel.getFloors(), floorName);
             final SubCorridor subCorridor = SubCorridor.findSubCorridor(floor.getSubCorridors(), subCorridorName);
@@ -46,15 +47,24 @@ public class Hotel {
                 }
             }
 
-            if (floor.isPowerConsumptionExceeding()) {
+            if (!floor.isPowerConsumptionNeutral() && checkIfConsumableMove(m, moves,i)) {
                 movePublisher.notifyPowerConsumptionIncreasing(subCorridor, floor.isPowerConsumptionExceeding());
             }
-
-            System.out.println(hotel.getFloors().toString().replaceAll("[\\[,\\]]", "").replaceAll("floorr[0-9]+",""));
-            System.out.println("---------------------------------------\n");
+            printHotelFloorState(hotel);
         }
 
         return true;
+    }
+
+    private boolean checkIfConsumableMove(Move m, List<Move> moves,int i) {
+        int index = moves.indexOf(m);
+        int index1 = moves.lastIndexOf(m);
+        return index1 - index == 1 && i==index;
+    }
+
+    private void printHotelFloorState(Hotel hotel) {
+        System.out.println(hotel.getFloors().toString().replaceAll("[\\[,\\]]", "").replaceAll("floorr[0-9]+", ""));
+        System.out.println("---------------------------------------\n");
     }
 }
 
