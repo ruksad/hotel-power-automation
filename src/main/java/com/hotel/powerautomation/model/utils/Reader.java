@@ -1,8 +1,9 @@
 package com.hotel.powerautomation.model.utils;
 
-import com.hotel.powerautomation.model.input.InPut;
+import com.hotel.powerautomation.model.input.Input;
 
 public interface Reader {
 
-    InPut read(String file);
+    Input read(String file);
+    Input readInput();
 }

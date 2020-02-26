@@ -7,7 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.hotel.powerautomation.framework.MovePublisher;
 import com.hotel.powerautomation.model.abstractmodels.Corridor;
-import com.hotel.powerautomation.model.input.InPut;
+import com.hotel.powerautomation.model.input.Input;
 import com.hotel.powerautomation.model.utils.Utils;
 import lombok.Data;
 
@@ -51,7 +51,7 @@ public class Floor {
         return mpc + scpc;
     }
 
-    public static Floor createFloor(InPut inPut, int floorNumber) {
+    public static Floor createFloor(Input inPut, int floorNumber) {
         final Floor floor = new Floor();
         floor.setFloorName("Floor " + (floorNumber + 1));
         floor.setPowerConsumption(floor.getPowerConsumption());
@@ -82,8 +82,8 @@ public class Floor {
         return currentPowerConsumption()>maxPowerConsumption();
     }
 
-    public boolean isPowerConsumptionNeutral(){
-        return currentPowerConsumption()==maxPowerConsumption();
+    public boolean isPowerConsumptionUnderUnits(){
+        return currentPowerConsumption()<maxPowerConsumption();
     }
     public int powerConsumptionExceedingFactor(){
         return currentPowerConsumption()-maxPowerConsumption();

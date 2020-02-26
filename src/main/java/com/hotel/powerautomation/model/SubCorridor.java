@@ -1,10 +1,7 @@
 package com.hotel.powerautomation.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import static com.hotel.powerautomation.model.abstractmodels.Device.getDevice;
 import com.hotel.powerautomation.framework.Observer;
 import com.hotel.powerautomation.model.abstractmodels.Corridor;
@@ -18,7 +15,6 @@ public class SubCorridor implements Corridor, Observer {
 
     private String subCorridorName;
     private List<Device> devices;
-    private static Map<SubCorridor, Integer> trackCorridorVisited = new HashMap<>();
 
 
     @Override
@@ -54,31 +50,29 @@ public class SubCorridor implements Corridor, Observer {
 
     @Override
     public void update(SubCorridor subCorridor, boolean isMovement) {
-        final Integer integer = trackCorridorVisited.get(subCorridor);
-
         if (this.equals(subCorridor) && isMovement) {
             for (Device device : subCorridor.getDevices()) {
                 device.action(true);
             }
-            trackCorridorVisited.compute(subCorridor, (k, v) -> (Objects.isNull(v)) ? 1 : v + 1);
+
         } else if (isMovement) {
-            for (Device device : subCorridor.getDevices()) {
+            for (Device device : this.getDevices()) {
                 device.action(false);
             }
-        } else if (!isMovement) {
-            for (Device device : subCorridor.getDevices()) {
-                if (device instanceof AirConditioner) {
-                    device.action(true);
-                }
-                if (device instanceof Light) {
-                    device.action(false);
-                }
-            }
+        } else {
+            defaultStateDefaultToCorridor(subCorridor);
         }
     }
 
-    public static boolean isCorridorAlreadyVisited(SubCorridor subCorridor) {
-        return trackCorridorVisited.get(subCorridor) >= 1;
+    private void defaultStateDefaultToCorridor(SubCorridor subCorridor) {
+        for (Device device : subCorridor.getDevices()) {
+            if (device instanceof AirConditioner) {
+                device.action(true);
+            }
+            if (device instanceof Light) {
+                device.action(false);
+            }
+        }
     }
 
     @Override
@@ -87,10 +81,12 @@ public class SubCorridor implements Corridor, Observer {
             return;
         }
         if (flag) {
+
             for (Device device : this.getDevices()) {
                 device.action(false);
             }
         } else if (!flag) {
+
             for (Device device : this.getDevices()) {
                 if (device instanceof Light) {
                     device.action(false);

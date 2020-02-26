@@ -6,15 +6,15 @@ import com.hotel.powerautomation.model.utils.Utils;
 import lombok.Data;
 
 @Data
-public class InPut {
+public class Input {
     private int noOfFloors;
     private int noOfMainCorridors;
     private int noOfSubCorridors;
     private List<Move> moves;
 
 
-    public static InPut readLine(List<String> lines) {
-        final InPut inPut = new InPut();
+    public static Input readLine(List<String> lines) {
+        final Input inPut = new Input();
         final ArrayList<Move> moves = new ArrayList<>();
         for (String line : lines) {
             if (line.startsWith("number")) {

@@ -11,7 +11,7 @@ class InPutTest extends Specification {
                 "movement in Floor 1, Sub corridor 2",
                 "no movement in Floor 1, Sub corridor 2 for 1 minute")
         when:
-        def input = InPut.readLine(list)
+        def input = Input.readLine(list)
         then:
         input.moves.get(0).movement
     }
