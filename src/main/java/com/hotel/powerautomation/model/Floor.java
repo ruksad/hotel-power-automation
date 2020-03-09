@@ -91,7 +91,7 @@ public class Floor {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("\t\tFloor ");
+        final StringBuilder sb = new StringBuilder("\t\tFloor ");
         sb.append(getFloorName()).append("\t\t\t\n").append(getMainCorridors().toString())
             .append("\n").append(getSubCorridors().toString()).append("\n");
         return sb.toString();

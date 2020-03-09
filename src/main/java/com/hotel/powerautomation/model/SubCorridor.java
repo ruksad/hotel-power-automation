@@ -85,7 +85,7 @@ public class SubCorridor implements Corridor, Observer {
             for (Device device : this.getDevices()) {
                 device.action(false);
             }
-        } else if (!flag) {
+        } else {
 
             for (Device device : this.getDevices()) {
                 if (device instanceof Light) {
@@ -99,7 +99,7 @@ public class SubCorridor implements Corridor, Observer {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer(subCorridorName);
+        final StringBuilder sb = new StringBuilder(subCorridorName);
         sb.append(devices.toString());
         return sb.toString();
     }
